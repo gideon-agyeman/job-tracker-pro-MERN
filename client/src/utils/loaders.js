@@ -1,6 +1,7 @@
 import { redirect } from 'react-router';
 import customFetch from './customFetch';
 import { toast } from 'react-toastify';
+import { statsQuery } from '../pages/Stats';
 
 export const dashboardLoader = async () => {
   try {
@@ -47,12 +48,7 @@ export const adminPageLoader = async () => {
   }
 };
 
-export const statsPageLoader = async () => {
-  try {
-    const { data } = await customFetch.get('/jobs/stats');
-    return data;
-  } catch (error) {
-    toast.error('');
-    return error;
-  }
+export const statsPageLoader = (queryClient) => async () => {
+  const data = await queryClient.ensureQueryData(statsQuery);
+  return data;
 };

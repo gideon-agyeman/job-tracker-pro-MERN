@@ -1,4 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {
   HomeLayout,
   LandingPage,
@@ -30,6 +32,15 @@ import {
   jobsLoader,
   statsPageLoader,
 } from './utils/loaders';
+import ErrorElement from './components/ErrorElement';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
@@ -64,7 +75,8 @@ const router = createBrowserRouter([
           {
             path: 'stats',
             element: <Stats />,
-            loader: statsPageLoader,
+            loader: statsPageLoader(queryClient),
+            errorElement: <ErrorElement />,
           },
           {
             path: 'all-jobs',
@@ -99,7 +111,12 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router}></RouterProvider>;
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+    </QueryClientProvider>
+  );
 };
 
 export default App;
