@@ -1,7 +1,7 @@
 import { redirect } from 'react-router';
 import customFetch from './customFetch';
 import { toast } from 'react-toastify';
-import { statsQuery } from '../pages/Stats';
+import { statsQuery } from './queryObject';
 
 export const dashboardLoader = async () => {
   try {
